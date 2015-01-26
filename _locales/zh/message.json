@@ -1,0 +1,10 @@
+{
+  "extension_name": {
+    "message": "小说阅读器",
+    "description": "NovelReader"
+  },
+  "extension_description": {
+    "message": "基于Chrome扩展的小说阅读器",
+    "description": "An extension of Reading novel/fiction in Chrome"
+  }
+}
