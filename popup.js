@@ -7,7 +7,7 @@ function setChildTextNode(elementId, text) {
 }
 
 function init() {
-  setChildTextNode('languageSpan', chrome.i18n.getMessage("click_here"));
+  setChildTextNode('languageSpan', chrome.i18n.getMessage("@@ui_locale"));
 }
 
 function getAcceptLanguages() {

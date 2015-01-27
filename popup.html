@@ -2,17 +2,36 @@
 
 <html>
   <head>
-    <style>
-      body {
-        color: black;
-        width: 300px;
-        }
-    </style>
     <script src='popup.js'></script>
+    <link rel='stylesheet' type='text/css' href='popup.css'></link>
   <head>
+
   <body>
-    <div id='accept_lang'>
-      <span id="languageSpan"></span>
-    </div>
+    <table id='require_reader'>
+      <tr>
+        <td>
+          <div id='read_cur_content'>
+            <span id='req_content'>Please input content page for novels:</span>
+            <br />
+            <input placeholder='conten page'></input>
+            <input type='button' value='Read it' />
+        </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div id='read_history'>
+            <span id='read_history_title'>History:</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div id='read_favorites'>
+            <span id='read_favorites_title'>Favorites:</span>
+          </div>
+      </td>
+      </tr>
+    </table>
   </body>
 </html>
