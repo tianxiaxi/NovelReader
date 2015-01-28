@@ -20,7 +20,7 @@ function init() {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var current = tabs[0];
     req_url = getId('req_read_url');
-    req_url.value = current.url;   
+    req_url.value = current.url;
   });
 }
 
@@ -33,5 +33,17 @@ function getAcceptLanguages() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  // init
   init();
+
+  // add event to readit
+  getId('readit').addEventListener('click', function() {
+    novel_url = getId('req_read_url').text;
+    tab_url = "../views/read.html";
+    chrome.tabs.create({
+      'url': tab_url,
+      'selected': true
+    });
+    window.close();
+  });
 });

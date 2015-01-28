@@ -2,20 +2,23 @@
   "name": "__MSG_extension_name__",
   "description": "__MSG_extension_description__",
   "version": "0.0.1",
-  
+
   "default_locale": "en",
 
   "browser_action": {
-    "default_title": "",
+    "default_title": "Novel Reader",
     "default_icon": "images/icon.png",
-    "default_popup": "popup.html"
+    "default_popup": "views/popup.html"
   },
 
   "permissions": [
     "tabs",
+    "storage",
     "http://*/*",
     "https://*/*"
   ],
+
+  "options_page": "views/options.html",
 
   "icons": {
     "128": "images/icon.png"
