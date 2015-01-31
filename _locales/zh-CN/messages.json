@@ -1,0 +1,25 @@
+{
+  "extension_name": {
+    "message": "小说阅读器",
+    "description": "NovelReader"
+  },
+  "extension_description": {
+    "message": "基于Chrome扩展的小说阅读器",
+    "description": "An extension of Reading novel/fiction in Chrome"
+  },
+  "extension_ConfirmcleanAllHistory": {
+    "message": "请确认是否需要清空所有历史记录 ?"
+  },
+  "extension_ReadIt": {
+    "message": "阅读"
+  },
+  "extension_HistoryLabel": {
+    "message": "历史记录"
+  },
+  "extension_cleanAllHistory": {
+    "message": "清空所有记录"
+  },
+  "extension_inputContentTitle": {
+    "message": "请输入小说的目录页:"
+  }
+}
