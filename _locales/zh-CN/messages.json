@@ -21,5 +21,11 @@
   },
   "extension_inputContentTitle": {
     "message": "请输入小说的目录页:"
+  },
+  "extension_InvalidUrl": {
+    "message": "错误: 无效的目录页"
+  },
+  "extension_supportWeb": {
+    "message": "查看已支持的网站"
   }
 }

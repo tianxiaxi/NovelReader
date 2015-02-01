@@ -19,5 +19,11 @@
   },
   "extension_inputContentTitle": {
     "message": "Please input contents page for novels:"
+  },
+  "extension_InvalidUrl": {
+    "message": "Error: Invalid url for contents page"
+  },
+  "extension_supportWeb": {
+    "message": "View supported website"
   }
 }

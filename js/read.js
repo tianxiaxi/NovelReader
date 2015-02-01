@@ -31,6 +31,7 @@ function addHistory(article, chapter, url) {
       item.article = article;
       item.chapter = chapter;
       item.url = url;
+      item.contentPage = url;
       historylist.unshift(item);
     }
     storage.set({'history': JSON.stringify(historylist)});
