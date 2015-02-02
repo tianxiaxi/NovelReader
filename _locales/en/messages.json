@@ -25,5 +25,8 @@
   },
   "extension_supportWeb": {
     "message": "View supported website"
+  },
+  "extension_viewSource": {
+    "message": "View Source: "
   }
 }

@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-//var storage = chrome.storage.sync;
-var storage = chrome.storage.local;
+var storage = chrome.storage.sync;
+var local = chrome.storage.local;
 
 function getHistoryList() {
   storage.get('history', function(items) {
@@ -74,8 +74,12 @@ function cleanAllHistory() {
   $('#hostory_list').html('');
 }
 
-function setCurrentUrl(url) {
-  storage.set({'current_url': url});
+function setCurrentUrl(url, id) {
+  var cur_url = url;
+  if (id > 0) {
+    cur_url += '@' + id.toString();
+  }
+  storage.set({"current_url": cur_url});
 }
 
 $(document).ready(function() {
@@ -88,7 +92,13 @@ $(document).ready(function() {
     if (!verifyNovelContentUrl(novel_url)) {
       $('#err_message').text(chrome.i18n.getMessage("extension_InvalidUrl"));
     } else {
-      openNewTab(novel_url);
+      localStorage.setItem("current_ContentPage", novel_url);
+      tab_url = chrome.extension.getURL('views/chapters.html');
+      chrome.tabs.create({
+        'url': tab_url,
+        'selected': true
+      });
+      window.close();
     }
   });
 });
@@ -133,7 +143,7 @@ function readNovel(id) {
       historylist = JSON.parse(items.history);
       for (i=0; i < historylist.length; ++i) {
         if (historylist[i].id == id) {
-          openNewTab(historylist[i].url);
+          openNewTab(historylist[i].url, id);
           return ;
         }
       }
@@ -141,10 +151,15 @@ function readNovel(id) {
   });
 }
 
-function openNewTab(url) {
-  setCurrentUrl(url);
+function openNewTab(url, id) {
+  setCurrentUrl(url, id);
 
-  tab_url = chrome.extension.getURL('views/read.html');
+  var tab_url = '';
+  if (id > 0) {
+    tab_url = chrome.extension.getURL('views/read.html');
+  } else {
+    tab_url = chrome.extension.getURL('views/chapters.html');
+  }
 /*  chrome.tabs.query({url: tab_url}, function(tabs) {
     var current = tabs[0];
     $('#req_read_url').attr('value', current.url);

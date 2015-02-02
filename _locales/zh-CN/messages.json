@@ -27,5 +27,8 @@
   },
   "extension_supportWeb": {
     "message": "查看已支持的网站"
+  },
+  "extension_viewSource": {
+    "message": "查看原网页: "
   }
 }
