@@ -3,7 +3,7 @@ var local = chrome.storage.local;
 
 function loadBody(url) {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", url, true);
+  xhr.open("GET", url, false);
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       var html = xhr.response;
@@ -37,7 +37,7 @@ function parseChapterContent_qidian(url, html) {
         if (-1 != src.indexOf('files.qidian.com') &&
           -1 != src.indexOf('.txt')) {
           var xhr = new XMLHttpRequest();
-          xhr.open("GET", src, true);
+          xhr.open("GET", src, false);
           xhr.overrideMimeType("text/html;charset=gb2312");
           xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
@@ -71,13 +71,17 @@ function parseChapterContent_qidian(url, html) {
 function LoadContent() {
   content_url = localStorage.getItem("current_ContentPage");
   url = localStorage.getItem("current_chapter");
+  chapterlist = JSON.parse(localStorage.getItem(content_url));
+  if (!chapterlist.length) {
+    parseChapterTitles(url);
+    chapterlist = JSON.parse(localStorage.getItem(content_url));
+  }
 
   // update header
   prev_chater_url = '';
   next_chater_url = '';
   chapter_name = '';
   innerHtml = '<h1>Not Found</h1>';
-  chapterlist = JSON.parse(sessionStorage.getItem(content_url));
   for (i=0; i < chapterlist.length; ++i) {
     var chapter = chapterlist[i];
     if (chapter.url == url) {
@@ -100,7 +104,7 @@ function LoadContent() {
       for (i=0; i < historylist.length; ++i) {
         if (historylist[i].contentPage == content_url) {
           historylist[i].url = url;
-          historylist[i].chapter = chapter;
+          historylist[i].chapter = chapter_name;
           title = historylist[i].article;
           window.document.title = title;
           storage.set({'history': JSON.stringify(historylist)});

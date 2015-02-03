@@ -9,6 +9,11 @@ function getHistoryList() {
   storage.get('history', function(items) {
     if (items.history) {
       historylist = JSON.parse(items.history);
+      if (!historylist.length) {
+        return ;
+      }
+
+      $('div#read_history').show();
       innerHtml = '<table class="table_history">';
       for (i=0; i < historylist.length; ++i) {
         innerHtml += '<tr class="tr_history">';
@@ -41,8 +46,6 @@ function getHistoryList() {
       $('span.book_item').click(function() {
         readNovel($(this).attr('id'));
       });
-    } else {
-      $('div#read_history').hide();
     }
   });
 }
@@ -72,14 +75,9 @@ function cleanAllHistory() {
   */
   storage.remove('history');
   $('#hostory_list').html('');
-}
 
-function setCurrentUrl(url, id) {
-  var cur_url = url;
-  if (id > 0) {
-    cur_url += '@' + id.toString();
-  }
-  storage.set({"current_url": cur_url});
+  historylist = JSON.parse("[]");
+  storage.set({'history': JSON.stringify(historylist)});
 }
 
 $(document).ready(function() {
@@ -93,6 +91,7 @@ $(document).ready(function() {
       $('#err_message').text(chrome.i18n.getMessage("extension_InvalidUrl"));
     } else {
       localStorage.setItem("current_ContentPage", novel_url);
+      //parseChapterTitles(novel_url);
       tab_url = chrome.extension.getURL('views/chapters.html');
       chrome.tabs.create({
         'url': tab_url,
@@ -143,33 +142,24 @@ function readNovel(id) {
       historylist = JSON.parse(items.history);
       for (i=0; i < historylist.length; ++i) {
         if (historylist[i].id == id) {
-          openNewTab(historylist[i].url, id);
+          content_page = historylist[i].contentPage;
+          chapter_body = historylist[i].url;
+          localStorage.setItem("current_ContentPage", content_page);
+          localStorage.setItem("current_chapter", chapter_body);
+          tab_url = chrome.extension.getURL('views/read.html');
+          if (chapter_body == content_page) {
+            tab_url = chrome.extension.getURL('views/chapters.html');
+          }
+          chrome.tabs.create({
+            'url': tab_url,
+            'selected': true
+          });
+          window.close();
           return ;
         }
       }
     }
   });
-}
-
-function openNewTab(url, id) {
-  setCurrentUrl(url, id);
-
-  var tab_url = '';
-  if (id > 0) {
-    tab_url = chrome.extension.getURL('views/read.html');
-  } else {
-    tab_url = chrome.extension.getURL('views/chapters.html');
-  }
-/*  chrome.tabs.query({url: tab_url}, function(tabs) {
-    var current = tabs[0];
-    $('#req_read_url').attr('value', current.url);
-  });
-*/
-  chrome.tabs.create({
-    'url': tab_url,
-    'selected': true
-  });
-  window.close();
 }
 
 function viewSupportWebsite() {
@@ -219,6 +209,7 @@ function init() {
   $('#view_supported_website').text(chrome.i18n.getMessage("extension_supportWeb"));
 
   // load history
+  $('div#read_history').hide();
   getHistoryList();
 }
 

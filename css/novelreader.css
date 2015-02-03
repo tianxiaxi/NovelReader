@@ -3,6 +3,10 @@
  */
 
 body {
+    font:12px arial,sans-serif;
+}
+
+body.popup {
     color: black;
     width: 350px;
     font:12px arial,sans-serif;
@@ -99,4 +103,38 @@ span.td_remove {
   color: #0000FF;
   margin-left:50px;
   cursor:pointer;
+}
+
+ul {
+  float:left;
+  width:100%;
+  list-style-type:none;
+  margin-left: 100px;
+}
+
+ol {
+  display: inline;
+}
+
+a.chapter_item {
+  float:left;
+  text-decoration:none;
+  color: #2F8BED;
+  //background: gray;
+  width: 25em;
+  padding:0.3em 0.5em;
+  font: 15px arial,sans-serif;
+  //border-right:1px solid red;
+}
+
+h1 {
+  text-align:center;
+  font-size: 300%;
+}
+
+div#novel_nav {
+  padding-top: 50px;
+  display: block;
+  text-align: center;
+  font-size:1.3em;
 }

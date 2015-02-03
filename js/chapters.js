@@ -3,7 +3,11 @@ var local = chrome.storage.local;
 
 function LoadChapterTitles(url) {
   // parse chapters
-  parseChapterTitles(url);
+  chapterlist = JSON.parse(localStorage.getItem(url));
+  if (!chapterlist.length) {
+    parseChapterTitles(url);
+    chapterlist = JSON.parse(localStorage.getItem(url));
+  }
 
   // load article
   storage.get('history', function(items) {
@@ -14,6 +18,8 @@ function LoadChapterTitles(url) {
         if (historylist[i].contentPage == url) {
           article = historylist[i].article;
           innerHtml = '<h1>' + article + '</h1>';
+          // update titile
+          window.document.title = article;
           break;
         }
       }
@@ -25,7 +31,7 @@ function LoadChapterTitles(url) {
 
   // load chapter titles
   innerHtml = '';
-  chapterlist = JSON.parse(sessionStorage.getItem(url));
+  //chapterlist = JSON.parse(localStorage.getItem(url));
   if (chapterlist) {
     innerHtml = '<ul>';
     for (i=0; i < chapterlist.length; ++i) {
@@ -47,10 +53,6 @@ function LoadChapterTitles(url) {
   var nav_html = '<b>' + chrome.i18n.getMessage("extension_viewSource") + '</b>';
   nav_html += '<a href="' + url + '">' + url + '</a>';
   $('#novel_nav').html(nav_html);
-
-  // update titile
-  title = $('#novel_title').text();
-  window.document.title = title;
 }
 
 $(document).ready(function() {

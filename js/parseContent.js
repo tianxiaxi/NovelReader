@@ -40,7 +40,7 @@ function addHistory(article, chapter, url) {
 
 function parseChapterTitles(url) {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", url, true);
+  xhr.open("GET", url, false);
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       var html = $.parseHTML(xhr.response);
@@ -96,7 +96,7 @@ function parseChapterTitles_qidian(url, html) {
   addHistory(novel_name, '', url);
 
   // insert chapters
-  sessionStorage.setItem(url, JSON.stringify(chapter_list));
+  localStorage.setItem(url, JSON.stringify(chapter_list));
 
   return true;
 }
