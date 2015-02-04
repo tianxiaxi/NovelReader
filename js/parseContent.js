@@ -2,6 +2,7 @@ var storage = chrome.storage.sync;
 var local = chrome.storage.local;
 
 function addHistory(article, chapter, url) {
+  sessionStorage.setItem('HasHistory', false);
   storage.get('history', function(items) {
     if (items.history) {
       var max_id = 0;
@@ -35,7 +36,20 @@ function addHistory(article, chapter, url) {
       historylist.unshift(item);
     }
     storage.set({'history': JSON.stringify(historylist)});
+    sessionStorage.setItem('HasHistory', true);
   });
+  hasHistory = sessionStorage.getItem('HasHistory');
+  if (!hasHistory) {
+      historylist = JSON.parse("[]");
+      var item = new Object;
+      item.id = 1;
+      item.article = article;
+      item.chapter = chapter;
+      item.url = url;
+      item.contentPage = url;
+      historylist.unshift(item);
+      storage.set({'history': JSON.stringify(historylist)});
+  }
 }
 
 function parseChapterTitles(url) {

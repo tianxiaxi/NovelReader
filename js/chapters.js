@@ -4,7 +4,7 @@ var local = chrome.storage.local;
 function LoadChapterTitles(url) {
   // parse chapters
   chapterlist = JSON.parse(localStorage.getItem(url));
-  if (!chapterlist.length) {
+  if (undefined == chapterlist || 0 >= chapterlist.length) {
     parseChapterTitles(url);
     chapterlist = JSON.parse(localStorage.getItem(url));
   }
