@@ -3,7 +3,8 @@
  */
 
 body {
-    font:12px arial,sans-serif;
+  font:12px arial,sans-serif;
+  background-color: #E7F4FE;
 }
 
 body.popup {
@@ -107,34 +108,43 @@ span.td_remove {
 
 ul {
   float:left;
-  width:100%;
+  text-align:center
+  width:80%;
   list-style-type:none;
-  margin-left: 100px;
+  margin-left:100px;
+  margin-right:0 auto;
 }
 
 ol {
+  float:left;
   display: inline;
+  width: 30%;
+  padding:0.5em 1em;
+  font: 15px arial,sans-serif;
+}
+
+a.chapter_item:hover {
+  background-color: #CFDBE4;
 }
 
 a.chapter_item {
-  float:left;
   text-decoration:none;
-  color: #2F8BED;
-  //background: gray;
-  width: 25em;
-  padding:0.3em 0.5em;
-  font: 15px arial,sans-serif;
-  //border-right:1px solid red;
+  color: #004E00;
 }
 
-h1 {
+a.chapter_item.chapter_item_read {
+  text-decoration:none;
+  color: #A1B3AB;
+}
+
+div#novel_title {
   text-align:center;
   font-size: 300%;
 }
 
 div#novel_nav {
-  padding-top: 50px;
-  display: block;
-  text-align: center;
+  float:right;
+  margin-top: 30px;
   font-size:1.3em;
+  margin-right: 100px;
 }

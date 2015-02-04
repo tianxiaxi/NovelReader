@@ -1,0 +1,42 @@
+body {
+  font:12px "microsoft YaHei","宋体";
+  background-color: #E7F4FE;
+}
+
+div#novel_title {
+  text-align:center;
+  font-size: 150%;
+}
+
+div#novel_text {
+  margin-top: 30px;
+  font-size: 10.5pt;
+  line-height: 1.8;
+  word-wrap: break-word;
+  //margin-left: 50px;
+}
+
+div#novel_nav {
+  text-align:center;
+  font-size: 150%;
+  margin-top: 50px;
+}
+
+div#novel_nav span {
+  padding:0.5em 1.5em;
+  font-size:1.1em;
+  color: #0000CC;
+}
+
+div#novel_nav span:hover {
+  cursor: pointer;
+  color: #FF0000;
+  text-decoration:underline;
+}
+
+div#current_url {
+  float: right;
+  margin-top: 50px;
+  font-size:1.1em;
+  margin-right: 50px;
+}

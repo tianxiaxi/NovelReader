@@ -55,17 +55,6 @@ function parseChapterContent_qidian(url, html) {
     html = html.substr(ilast+1);
     ipos = html.indexOf('<script');
   }
-
-  doc = $.parseHTML(html);
-  $("[charset]", doc).each(function() {
-    src = $(this).attr('src');
-    if (src) {
-      console.log(src);
-    }
-  })
-  innerHtml = '';
-  book = $('.bookcontent', html);
-  $('#novel_text').text(book.text());
 }
 
 function LoadContent() {
@@ -85,17 +74,25 @@ function LoadContent() {
   for (i=0; i < chapterlist.length; ++i) {
     var chapter = chapterlist[i];
     if (chapter.url == url) {
+      chapter.hasRead = true;
       chapter_name = chapter.title;
       innerHtml = '<h1>' + chapter_name + '</h1>';
       if (i > 0) prev_chater_url = chapterlist[i-1].url;
       if (i < chapterlist.length-1) next_chater_url = chapterlist[i+1].url;
+      if (!chapter.body) {
+        loadBody(url);
+        chapter.body = $('#novel_text').html();
+      } else {
+        $('#novel_text').html(chapter.body);
+      }
       break;
     }
   }
+  localStorage.setItem(content_url, JSON.stringify(chapterlist));
   $('#novel_title').html(innerHtml);
 
   // update html body
-  loadBody(url);
+  //loadBody(url);
 
   // update title
   storage.get('history', function(items) {

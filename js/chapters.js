@@ -37,7 +37,12 @@ function LoadChapterTitles(url) {
     for (i=0; i < chapterlist.length; ++i) {
       var chapter = chapterlist[i];
       innerHtml += '<ol>';
-      link = '<a href="../views/read.html" class="chapter_item" ';
+      link = '<a href="../views/read.html" class="';
+      link += 'chapter_item';
+      if (chapter.hasRead) {
+        link += ' chapter_item_read ';
+      }
+      link += '" ';
       link += 'id="' + chapter.url + '"';
       link += '>' + chapter.title + '</a>';
       innerHtml += link;

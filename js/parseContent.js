@@ -85,6 +85,8 @@ function parseChapterTitles_qidian(url, html) {
     var item = new Object;
     item.title = title;
     item.url = href;
+    item.hasRead = false;
+    item.body = '';
     chapter_list.push(item);
   });
 
