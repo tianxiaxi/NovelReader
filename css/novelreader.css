@@ -12,6 +12,7 @@ body.popup {
     width: 350px;
     font:12px arial,sans-serif;
     //border:1px solid green;
+    background-color: white;
 }
 
 #clean_all_histories {
@@ -106,7 +107,7 @@ span.td_remove {
   cursor:pointer;
 }
 
-ul {
+ul.chapter_list {
   float:left;
   text-align:center
   width:80%;
@@ -115,7 +116,7 @@ ul {
   margin-right:0 auto;
 }
 
-ol {
+ol.chapter_item {
   float:left;
   display: inline;
   width: 30%;

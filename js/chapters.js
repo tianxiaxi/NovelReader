@@ -33,10 +33,10 @@ function LoadChapterTitles(url) {
   innerHtml = '';
   //chapterlist = JSON.parse(localStorage.getItem(url));
   if (chapterlist) {
-    innerHtml = '<ul>';
+    innerHtml = '<ul class="chapter_list">';
     for (i=0; i < chapterlist.length; ++i) {
       var chapter = chapterlist[i];
-      innerHtml += '<ol>';
+      innerHtml += '<ol class="chapter_item">';
       link = '<a href="../views/read.html" class="';
       link += 'chapter_item';
       if (chapter.hasRead) {
