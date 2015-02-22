@@ -1,12 +1,47 @@
 <!doctype html>
 <html>
   <head>
-    <link rel='stylesheet' type='text/css' href='../css/novelreader.css'></link>
+    <meta charset="utf-8" />
+    <link rel='stylesheet' type='text/css' href='../css/options.css'></link>
   </head>
 
-  <body>
+  <body class='opt_body'>
+    <header>
+      <div class='opt_title'>
+        <h1>小说阅读器设置</h1>
+      </div>
+    </header>
+      <div class='app_info'>
+        <p>小说阅读器(NovelReader)是一个基于Chrome浏览器的扩展应用. 无须安装任何第三方应用,
+        阅读所有支持网站的小说,让你远离烦人的广告与弹出页面; 同进可以将整部小说缓存到本地,
+        即使在离线的时候也可以阅读.当你在其它设备上使用Chrome时,NovelReader将自动同步你的阅读历史记录.
+        <p>你可以访问NovelReader的开源代码,获取最新的动态: <em><a href='https://github.com/tianxiaxi/NovelReader'>
+        https://github.com/tianxiaxi/NovelReader</a></em></p>
+      </div>
+
+    <div class='opt_content'>
+      <section id='opt_sec_history'>
+        <h3 class='sec_name'>阅读历史记录</h3>
+        <div class='sec_body'>
+        </div>
+      </section>
+
+      <section id='opt_sec_weblist'>
+        <h3 class='sec_name'>支持的网站</h3>
+        <div class='sec_body'>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <div class='opt_about'>
+      <p>有任何建议或问题, 请<a href='mailto:wayne@zanran.me'>联系我们</a>,
+      帮助我们改进NovelReader,为大家提供更丰富的阅读体验!
+      </p>
+    </div>
+    </footer>
   </body>
 
-  <script src='../js/jquery-2.1.3.js'></script>
+  <script src='../js/jquery-2.1.3.min.js'></script>
   <script src='../js/options.js'></script>
 </html>

@@ -131,6 +131,7 @@ a.chapter_item:hover {
 a.chapter_item {
   text-decoration:none;
   color: #004E00;
+  margin: 5px;
 }
 
 a.chapter_item.chapter_item_read {
@@ -148,4 +149,8 @@ div#novel_nav {
   margin-top: 30px;
   font-size:1.3em;
   margin-right: 100px;
+  margin-bottom: 20px;
 }
+
+
+

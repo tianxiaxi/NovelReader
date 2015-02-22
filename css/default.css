@@ -1,6 +1,8 @@
 body {
-  font:12px "microsoft YaHei","宋体";
+  font:14px "microsoft YaHei","宋体";
   background-color: #E7F4FE;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
 div#novel_title {

@@ -83,53 +83,20 @@ function cleanAllHistory() {
 $(document).ready(function() {
   // init
   init();
-
-  // add event to readit
-  $('#readit').click(function() {
-    var novel_url = $('#req_read_url').val();
-    if (!verifyNovelContentUrl(novel_url)) {
-      $('#err_message').text(chrome.i18n.getMessage("extension_InvalidUrl"));
-    } else {
-      localStorage.setItem("current_ContentPage", novel_url);
-      //parseChapterTitles(novel_url);
-      tab_url = chrome.extension.getURL('views/chapters.html');
-      chrome.tabs.create({
-        'url': tab_url,
-        'selected': true
-      });
-      window.close();
-    }
-  });
 });
 
 function verifyNovelContentUrl(url) {
   if (!url) {
     return false;
   }
-
-  storage.get('support_website', function(items) {
-    var weblist = '';
-    if (items.support_website) {
-      support_weblist = JSON.parse(items.support_website);
-      for (i = 0; i < support_weblist.length; ++i) {
-        if (i > 0) weblist += ',';
-        weblist += support_weblist[i].url;
-      }
-    } else {
-      var website_list = JSON.parse("[]");
-      var web={"title":"起点中文网", "url":"qidian.com"};
-      website_list.push(web);
-      weblist += web.url;
-      storage.set({'support_website': JSON.stringify(website_list)});
-    }
-    $('#valid_website').text(weblist);
-  });
-
   var text = $('#valid_website').text();
   weblist = text.split(',');
   for (i = 0; i < weblist.length; ++i) {
-    web = weblist[i];
-    if (-1 != url.indexOf(web)) {
+    domain_url = weblist[i];
+    if (domain_url.length < 1) {
+      continue;
+    }
+    if (-1 != url.indexOf(domain_url)) {
       return true;
     }
   }
@@ -163,27 +130,37 @@ function readNovel(id) {
 }
 
 function viewSupportWebsite() {
-  innerHtml = '<b>' + chrome.i18n.getMessage("extension_supportWeb") + '</b>';
-  storage.get('support_website', function(items) {
-    if (items.support_website) {
-      innerHtml += '<ul>';
-      support_weblist = JSON.parse(items.support_website);
-      for (i = 0; i < support_weblist.length; ++i) {
-        var web = support_weblist[i].title;
-        var href = support_weblist[i].url;
-        if (-1 == href.indexOf('://')) {
-          href = 'http://' + href;
-        }
-        var weblink = '<a href="' + href + '">' + web + '</a>';
-        innerHtml += '<li>' + weblink + '</li>';
-      }
-      innerHtml += '</ul>';
+  var website_file = chrome.extension.getURL('websiteList.json');
+  $.get(website_file, function(data) {
+    var weblist_html = "";
+    weblist_html = '<b>' + chrome.i18n.getMessage("extension_supportWeb") + '</b>';
+    var file_json = JSON.parse(data);
+    var weblist = file_json.websiteList;
+    weblist_html += '<ul>';
+    for (i = 0; i < weblist.length; ++i) {
+      var web = weblist[i];
+      home_page = '<a href="' + web.home_page + '">' + web.name_chn + '</a>';
+      weblist_html += '<li>' + home_page + '</li>';
     }
-    $('#view_supported_website').html(innerHtml);
-  });
+    weblist_html += "</ul>";
+    $('#view_supported_website').html(weblist_html);
+  })
 }
 
 function init() {
+  // load supported website list
+  var website_file = chrome.extension.getURL('websiteList.json');
+  $.get(website_file, function(data) {
+    var weblist_html = "";
+    var file_json = JSON.parse(data);
+    var weblist = file_json.websiteList;
+    for (i = 0; i < weblist.length; ++i) {
+      weblist_html += weblist[i].domain_url;
+      weblist_html += ',';
+    }
+    $('#valid_website').text(weblist_html);
+  })
+
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var current = tabs[0];
     if (verifyNovelContentUrl(current.url)) {
@@ -211,5 +188,24 @@ function init() {
   // load history
   $('div#read_history').hide();
   getHistoryList();
+
+  // add event to readit
+  $('#readit').click(readit);
+}
+
+function readit() {
+  var novel_url = $('#req_read_url').val();
+  if (!verifyNovelContentUrl(novel_url)) {
+    $('#err_message').text(chrome.i18n.getMessage("extension_InvalidUrl"));
+  } else {
+    localStorage.setItem("current_ContentPage", novel_url);
+    //parseChapterTitles(novel_url);
+    tab_url = chrome.extension.getURL('views/chapters.html');
+    chrome.tabs.create({
+      'url': tab_url,
+      'selected': true
+    });
+    window.close();
+  }
 }
 

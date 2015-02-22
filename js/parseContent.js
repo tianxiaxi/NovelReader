@@ -1,119 +1,86 @@
-var storage = chrome.storage.sync;
-var local = chrome.storage.local;
-
-function addHistory(article, chapter, url) {
-  sessionStorage.setItem('HasHistory', false);
-  storage.get('history', function(items) {
-    if (items.history) {
-      var max_id = 0;
-      var bInsert = true;
-      historylist = JSON.parse(items.history);
-      for (i=0; i < historylist.length; ++i) {
-        if (historylist[i].id > max_id) {
-          max_id = historylist[i].id;
-        }
-
-        // update item
-        if (historylist[i].article == article) {
-          historylist[i].chapter = chapter;
-          historylist[i].url = url;
-          bInsert = false;
-          break;
-        }
-      }
-    } else {
-      historylist = JSON.parse("[]");
-    }
-
-    if (bInsert) {
-      max_id += 1;
-      var item = new Object;
-      item.id = max_id;
-      item.article = article;
-      item.chapter = chapter;
-      item.url = url;
-      item.contentPage = url;
-      historylist.unshift(item);
-    }
-    storage.set({'history': JSON.stringify(historylist)});
-    sessionStorage.setItem('HasHistory', true);
-  });
-  hasHistory = sessionStorage.getItem('HasHistory');
-  if (!hasHistory) {
-      historylist = JSON.parse("[]");
-      var item = new Object;
-      item.id = 1;
-      item.article = article;
-      item.chapter = chapter;
-      item.url = url;
-      item.contentPage = url;
-      historylist.unshift(item);
-      storage.set({'history': JSON.stringify(historylist)});
-  }
-}
-
-function parseChapterTitles(url) {
+function parseBody(chapter, target_id) {
+  url = chapter.url;
   var xhr = new XMLHttpRequest();
   xhr.open("GET", url, false);
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      var html = $.parseHTML(xhr.response);
-      ipos = url.indexOf('qidian.com');
-      if (-1 != ipos) {
-        parseChapterTitles_qidian(url, html);
-      }
+      var html = xhr.response;
+      var website_file = chrome.extension.getURL('websiteList.json');
+      $.get(website_file, function(data) {
+        var file_json = JSON.parse(data);
+        for (i = 0; i < file_json.websiteList.length; ++i) {
+          var web = file_json.websiteList[i];
+          ipos = url.indexOf(web.domain_url);
+          if (-1 != ipos) {
+            if (web.content_selector.length > 0) {
+              parseChapterContent(chapter, html, web);
+            } else {
+              parseChapterContent_spec(chapter, html, web);
+            }
+            if (target_id) {
+              $(target_id.toString()).html(chapter.body);
+            }
+            break;
+          }
+        }
+      })
     }
   }
   xhr.send();
 }
 
-function parseChapterTitles_qidian(url, html) {
-  base_url = url;
-  ipos = url.lastIndexOf('.');
-  if (-1 != ipos) {
-    base_url = url.substr(0, ipos);
-  }
-
-  // get novel name
-  h1 = $('h1', html);
-  h1.children().each(function() {
-    $(this).remove();
-  });
-  novel_name = h1.text();
-  if (!novel_name) {
-    return false;
-  }
-
-  // get chapters
-  var chapter_list = JSON.parse("[]");
-  $('a', html).each(function() {
-    title = $(this).text();
-    href = $(this).attr('href');
-    if (url == href) {
-      return ;  // current page
+function parseChapterContent(chapter, html, web) {
+  for (i = 0; i < web.content_selector.length; ++i) {
+    var content_selector = web.content_selector[i];
+    var label_body = $(content_selector.toString(), html);
+    if (label_body.length < 1) {
+      continue;
     }
-    if (-1 == href.indexOf(base_url)) {
-      return ;  // not content page
+    label_body.find('div').remove();
+    chapter.body = label_body.html();
+    if (chapter.body.length > 0) {
+      break;
     }
-
-    var item = new Object;
-    item.title = title;
-    item.url = href;
-    item.hasRead = false;
-    item.body = '';
-    chapter_list.push(item);
-  });
-
-  if (0 >= chapter_list.length) {
-    return false;
   }
-
-  // save history
-  addHistory(novel_name, '', url);
-
-  // insert chapters
-  localStorage.setItem(url, JSON.stringify(chapter_list));
-
-  return true;
 }
 
+function parseChapterContent_spec(chapter, html, web) {
+  ipos = html.indexOf('<script');
+  while (ipos > 0) {
+    html = html.substr(ipos+1);
+    ilast = html.indexOf('>');
+    if (ilast > 0) {
+      src = html.substr(0, ilast);
+      pos = src.indexOf('src');
+      if (pos > 0) {
+        src = src.substr(pos + 1);
+        pos = src.indexOf('"');
+        if (pos > 0) src = src.substr(pos + 1);
+        pos = src.indexOf('"');
+        if (pos > 0) src = src.substr(0, pos);
+        pos = src.indexOf("'");
+        if (pos > 0) src = src.substr(pos + 1);
+        pos = src.indexOf("'");
+        if (pos > 0) src = src.substr(0, pos);
+        if (-1 != src.indexOf('files.qidian.com') &&
+          -1 != src.indexOf('.txt')) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", src, false);
+          xhr.overrideMimeType("text/html;charset=gb2312");
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+              text = xhr.response;
+              text = text.replace("document.write('", "");
+              text = text.replace("');", "");
+              chapter.body = text;
+            }
+          }
+          xhr.send();
+          return ;
+        }
+      }
+    }
+    html = html.substr(ilast+1);
+    ipos = html.indexOf('<script');
+  }
+}

@@ -1,40 +1,23 @@
 var storage = chrome.storage.sync;
 var local = chrome.storage.local;
 
-function LoadChapterTitles(url) {
+function LoadChapterTitles() {
+  url = localStorage.getItem("current_ContentPage");
   // parse chapters
   chapterlist = JSON.parse(localStorage.getItem(url));
-  if (undefined == chapterlist || 0 >= chapterlist.length) {
-    parseChapterTitles(url);
-    chapterlist = JSON.parse(localStorage.getItem(url));
-  }
-
-  // load article
-  storage.get('history', function(items) {
-    innerHtml = '';
-    if (items.history) {
-      historylist = JSON.parse(items.history);
-      for (i=0; i < historylist.length; ++i) {
-        if (historylist[i].contentPage == url) {
-          article = historylist[i].article;
-          innerHtml = '<h1>' + article + '</h1>';
-          // update titile
-          window.document.title = article;
-          break;
-        }
-      }
-    } else {
-      //innerHtml = '<h1>Not Found</h1>';
-    }
-    $('#novel_title').html(innerHtml);
-  });
 
   // load chapter titles
   innerHtml = '';
-  //chapterlist = JSON.parse(localStorage.getItem(url));
   if (chapterlist) {
+    // load article
+    novel_name = chapterlist[0].title;
+    innerHtml = '<h1>' + novel_name + '</h1>';
+    // update titile
+    window.document.title = novel_name;
+    $('#novel_title').html(innerHtml);
+
     innerHtml = '<ul class="chapter_list">';
-    for (i=0; i < chapterlist.length; ++i) {
+    for (i=1; i < chapterlist.length; ++i) {
       var chapter = chapterlist[i];
       innerHtml += '<ol class="chapter_item">';
       link = '<a href="../views/read.html" class="';
@@ -62,7 +45,18 @@ function LoadChapterTitles(url) {
 
 $(document).ready(function() {
   current_url = localStorage.getItem("current_ContentPage");
-  LoadChapterTitles(current_url);
+  if (!localStorage[current_url]) {
+  /*  // start worker for cache chapters
+    var worker = new Worker('../js/parseChapters.js');
+    worker.onmessage = function(evt) {
+      if ('DONE' == evt.data) {
+        LoadChapterTitles();
+      }
+    }*/
+    parseChapterUrl();
+  } else {
+    LoadChapterTitles();
+  }
 
   $('a.chapter_item').click(function() {
     url = $(this).attr('id');

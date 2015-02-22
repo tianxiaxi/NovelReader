@@ -1,61 +1,7 @@
 var storage = chrome.storage.sync;
 var local = chrome.storage.local;
 
-function loadBody(url) {
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", url, false);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      var html = xhr.response;
-      ipos = url.indexOf('qidian.com');
-      if (-1 != ipos) {
-        parseChapterContent_qidian(url, html);
-      }
-    }
-  }
-  xhr.send();
-}
-
-function parseChapterContent_qidian(url, html) {
-  ipos = html.indexOf('<script');
-  while (ipos > 0) {
-    html = html.substr(ipos+1);
-    ilast = html.indexOf('>');
-    if (ilast > 0) {
-      src = html.substr(0, ilast);
-      pos = src.indexOf('src');
-      if (pos > 0) {
-        src = src.substr(pos + 1);
-        pos = src.indexOf('"');
-        if (pos > 0) src = src.substr(pos + 1);
-        pos = src.indexOf('"');
-        if (pos > 0) src = src.substr(0, pos);
-        pos = src.indexOf("'");
-        if (pos > 0) src = src.substr(pos + 1);
-        pos = src.indexOf("'");
-        if (pos > 0) src = src.substr(0, pos);
-        if (-1 != src.indexOf('files.qidian.com') &&
-          -1 != src.indexOf('.txt')) {
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", src, false);
-          xhr.overrideMimeType("text/html;charset=gb2312");
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-              text = xhr.response;
-              text = text.replace("document.write('", "");
-              text = text.replace("');", "");
-              $('#novel_text').html(text);
-            }
-          }
-          xhr.send();
-          return ;
-        }
-      }
-    }
-    html = html.substr(ilast+1);
-    ipos = html.indexOf('<script');
-  }
-}
+var oldKeyDown = document.onkeydown;
 
 function LoadContent() {
   content_url = localStorage.getItem("current_ContentPage");
@@ -67,34 +13,37 @@ function LoadContent() {
   }
 
   // update header
+  if (!chapterlist.length) {
+    return ;
+  }
+  window.document.title = chapterlist[0].title;
   prev_chater_url = '';
   next_chater_url = '';
   chapter_name = '';
   innerHtml = '<h1>Not Found</h1>';
-  for (i=0; i < chapterlist.length; ++i) {
+  for (i=1; i < chapterlist.length; ++i) {
     var chapter = chapterlist[i];
     if (chapter.url == url) {
       chapter.hasRead = true;
       chapter_name = chapter.title;
       innerHtml = '<h1>' + chapter_name + '</h1>';
-      if (i > 0) prev_chater_url = chapterlist[i-1].url;
-      if (i < chapterlist.length-1) next_chater_url = chapterlist[i+1].url;
-      if (!chapter.body) {
-        loadBody(url);
-        chapter.body = $('#novel_text').html();
-      } else {
-        $('#novel_text').html(chapter.body);
+      if (i > 1) {
+        prev_chater_url = chapterlist[i-1].url;
       }
+      if (i < chapterlist.length-1) {
+        next_chater_url = chapterlist[i+1].url;
+      }
+      if (chapter.body || chapter.body.length <= 0) {
+        parseBody(chapter, '#novel_text')
+      }
+      $('#novel_text').html(chapter.body);
       break;
     }
   }
   localStorage.setItem(content_url, JSON.stringify(chapterlist));
   $('#novel_title').html(innerHtml);
 
-  // update html body
-  //loadBody(url);
-
-  // update title
+  // update history
   storage.get('history', function(items) {
     if (items.history) {
       historylist = JSON.parse(items.history);
@@ -102,8 +51,6 @@ function LoadContent() {
         if (historylist[i].contentPage == content_url) {
           historylist[i].url = url;
           historylist[i].chapter = chapter_name;
-          title = historylist[i].article;
-          window.document.title = title;
           storage.set({'history': JSON.stringify(historylist)});
           break;
         }
@@ -140,5 +87,30 @@ function LoadContent() {
 
 $(document).ready(function() {
   LoadContent();
+
+  oldKeyDown = document.onkeydown;
+  document.onkeydown = onkeydown;
 })
 
+function onkeydown() {
+  if ($('#chrome_ext_slideview_images_modal_dlg').is(":hidden")) {
+    document.onkeydown = oldKeyDown;
+    return ;
+  }
+  var keyCode = event.keyCode;
+  if (37 == keyCode || 38 == keyCode) {
+    // prev
+    if (!$('.prev_chapter').is(':hidden')) {
+      localStorage.setItem("current_chapter", prev_chater_url);
+      location.reload();
+    }
+  } else if (39 == keyCode || 40 == keyCode){
+    // next
+    if (!$('.next_chapter').is(':hidden')) {
+      localStorage.setItem("current_chapter", next_chater_url);
+      location.reload();
+    }
+  } else if (13 == keyCode) {
+    window.location.href = '../views/chapters.html';
+  }
+}

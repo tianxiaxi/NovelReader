@@ -1,0 +1,77 @@
+body.opt_body {
+  padding-top: 10px;
+  padding-left: 50px;
+  width: 650px;
+}
+
+div.opt_content {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 5px;
+}
+
+input#website {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+button#AddWebsite {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+span#error_tips {
+  color: red;
+  font: italic 15px arial,sans-serif;
+}
+
+
+div.sec_body {
+  margin-left: 2em;
+}
+
+section#opt_sec_flags {
+  margin-top: 30px;
+}
+
+ul.opt_ul {
+  margin-left: -4em;
+}
+
+ul.opt_ul li {
+  list-style: none;
+}
+
+input#allow_thumbnail {
+  margin-right: 10px;
+}
+
+footer {
+  font-size: 1.3em;
+}
+
+#allowed_website_list {
+  font-size: 1.5em;
+  font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse:collapse;
+  margin-bottom: 10px;
+}
+
+#allowed_website_list tr td {
+  width: 200px;
+  border:1px solid #98bf21;
+}
+
+#allowed_website_list tr:hover {
+  background-color:#EAF2D3;
+}
+
+span.remove_item {
+  font-size: 15px;
+  color: blue;
+  padding-left: 10px;
+}
+
+span.remove_item:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,42 @@
+{
+  "version": "0.0.1",
+  "websiteList": [
+    {
+      "name_eng": "qidian",
+      "name_chn": "起点中文网",
+      "domain_url": "qidian.com",
+      "home_page": "http://www.qidian.com",
+      "content_selector": [],
+      "chapter_selector": [],
+      "title_selector": []
+    },
+    {
+      "name_eng": "silukee",
+      "name_chn": "思路客",
+      "domain_url": "silukee.com",
+      "home_page": "http://www.silukee.com",
+      "content_selector": [
+        "div.cont"
+        ],
+      "chapter_selector": [
+        "ul li a"
+      ],
+      "title_selector": [
+        "h1 a",
+        ".bookname h1 a",
+        "h1"
+      ]
+    },
+    {
+      "name_eng": "23wx",
+      "name_chn": "顶点小说",
+      "domain_url": "23wx.com",
+      "home_page": "http://www.23wx.com",
+      "content_selector": [
+        "dd#contents"
+        ],
+      "chapter_selector": [],
+      "title_selector": []
+    }
+  ]
+}
