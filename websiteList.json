@@ -7,8 +7,15 @@
       "domain_url": "qidian.com",
       "home_page": "http://www.qidian.com",
       "content_selector": [],
-      "chapter_selector": [],
-      "title_selector": []
+      "chapter_selector": [
+        "div.box_cont div.list ul li a",
+        "#book_box .section ul li a"
+      ],
+      "title_selector": [
+        ".booktitle h1",
+        ".book_title h2"
+      ],
+      "enabled": true
     },
     {
       "name_eng": "silukee",
@@ -25,7 +32,8 @@
         "h1 a",
         ".bookname h1 a",
         "h1"
-      ]
+      ],
+      "enabled": true
     },
     {
       "name_eng": "23wx",
@@ -35,8 +43,270 @@
       "content_selector": [
         "dd#contents"
         ],
-      "chapter_selector": [],
-      "title_selector": []
+      "chapter_selector": [
+        "td a"
+      ],
+      "title_selector": [
+        "dd h1"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "xxsy",
+      "name_chn": "潇湘书院",
+      "domain_url": "xxsy.net",
+      "home_page": "http://www.xxsy.net",
+      "content_selector": [
+        "#detail_list #zjcontentdiv"
+        ],
+      "chapter_selector": [
+        "#catalog_list li a"
+      ],
+      "title_selector": [
+        "#ct_title h1"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "zongheng",
+      "name_chn": "纵横中文网",
+      "domain_url": "zongheng.com",
+      "home_page": "http://www.zongheng.com",
+      "content_selector": [
+        "div#chapterContent"
+        ],
+      "chapter_selector": [
+        "td.chapterBean a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "17k",
+      "name_chn": "17k小说网",
+      "domain_url": "17k.com",
+      "home_page": "http://www.17k.com",
+      "content_selector": [
+        "div#chapterContentWapper"
+        ],
+      "chapter_selector": [
+        ".con ul li a"
+      ],
+      "title_selector": [
+        ".directory_title h1 a"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "kanshuzhong",
+      "name_chn": "看书中",
+      "domain_url": "kanshuzhong.com",
+      "home_page": "http://www.kanshuzhong.com",
+      "content_selector": [
+        "div"
+        ],
+      "chapter_selector": [
+        "dd a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": false
+    },
+    {
+      "name_eng": "ranwen",
+      "name_chn": "燃文小说网",
+      "domain_url": "ranwen.org",
+      "home_page": "http://www.ranwen.org",
+      "content_selector": [
+        "div"
+        ],
+      "chapter_selector": [
+        "td a"
+      ],
+      "title_selector": [
+        ".bname"
+      ],
+      "enabled": false
+    },
+    {
+      "name_eng": "fqxsw",
+      "name_chn": "番茄小说",
+      "domain_url": "fqxsw.com",
+      "home_page": "http://www.fqxsw.com",
+      "content_selector": [
+        "#booktext"
+        ],
+      "chapter_selector": [
+        "li a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "duxs7",
+      "name_chn": "duxs7.com",
+      "domain_url": "duxs7.com",
+      "home_page": "http://www.duxs7.com",
+      "content_selector": [
+        "#content"
+        ],
+      "chapter_selector": [
+        "#list dd a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "hunhun",
+      "name_chn": "混混小说网",
+      "domain_url": "hunhun.net",
+      "home_page": "http://www.hunhun.net",
+      "content_selector": [
+        "#content"
+        ],
+      "chapter_selector": [
+        "#list dd a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "xunshu",
+      "name_chn": "寻书网",
+      "domain_url": "xunshu.org",
+      "home_page": "http://www.xunshu.org",
+      "content_selector": [
+        "#content"
+        ],
+      "chapter_selector": [
+        "td .dccss a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "biquge",
+      "name_chn": "笔趣阁",
+      "domain_url": "biquge.la",
+      "home_page": "http://www.biquge.la",
+      "content_selector": [
+        "#content"
+        ],
+      "chapter_selector": [
+        "#list dd a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "txtbbs",
+      "name_chn": "TXT小说网",
+      "domain_url": "txtbbs.com",
+      "home_page": "http://www.txtbbs.com",
+      "content_selector": [
+        "#content"
+        ],
+      "chapter_selector": [
+        ".bookli li a"
+      ],
+      "title_selector": [
+        "h2 a"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "91xs",
+      "name_chn": "91小说网",
+      "domain_url": "91xs.cc",
+      "home_page": "http://www.91xs.cc",
+      "content_selector": [
+        "#content1",
+        ".zj_text"
+        ],
+      "chapter_selector": [
+        "dd a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": true
+    },
+    {
+      "name_eng": "exiaoshuo",
+      "name_chn": "E小说",
+      "domain_url": "exiaoshuo.com",
+      "home_page": "http://www.exiaoshuo.com",
+      "content_selector": [
+        "#content"
+        ],
+      "chapter_selector": [
+        ".list dd a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": false
+    },
+    {
+      "name_eng": "lingdiankanshu",
+      "name_chn": "零点看书",
+      "domain_url": "lingdiankanshu.com",
+      "home_page": "http://www.lingdiankanshu.com",
+      "content_selector": [
+        "#content"
+        ],
+      "chapter_selector": [
+        ".list dd a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": false
+    },
+    {
+      "name_eng": "tianyibook",
+      "name_chn": "天翼文学",
+      "domain_url": "tianyibook.com",
+      "home_page": "http://www.tianyibook.com",
+      "content_selector": [
+        "#content"
+        ],
+      "chapter_selector": [
+        "td a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": false
+    },
+    {
+      "name_eng": "xbiquge",
+      "name_chn": "新笔趣阁",
+      "domain_url": "xbiquge.com",
+      "home_page": "http://www.xbiquge.com",
+      "content_selector": [
+        "#content"
+        ],
+      "chapter_selector": [
+        "dd a"
+      ],
+      "title_selector": [
+        "h1"
+      ],
+      "enabled": true
     }
   ]
 }

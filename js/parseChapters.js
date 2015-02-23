@@ -64,11 +64,15 @@ function parseChapterUrl() {
         var weblist = file_json.websiteList;
         for (i = 0; i < weblist.length; ++i) {
           var web = weblist[i];
+          if (!web.enabled) {
+            continue;
+          }
           if (-1 != url.indexOf(web.domain_url)) {
             parseChapterTitles(url, html, web);
+            break;
           }
         }
-      })
+      });
     }
   }
   xhr.send();
@@ -84,12 +88,27 @@ function parseChapterTitles(url, html, web) {
       continue;
     }
     novel_name = label_h1.text();
+    novel_name = novel_name.trim();
     if (novel_name.length > 0) {
+      label_h1.children().remove();
+      var name = label_h1.text();
+      name = name.trim();
+      if (name.length > 0) {
+        novel_name = name;
+      }
       break;
     }
   }
   if (!novel_name.length) {
-    return false;
+    title = $('title', html);
+    if (title.length > 0) {
+      novel_name = title.text();
+      if (!novel_name.length) {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
   // get chapters
@@ -100,8 +119,27 @@ function parseChapterTitles(url, html, web) {
     label.each(function() {
       var title = $(this).text();
       var href = $(this).attr('href');
-      if (-1 == href.indexOf(url)) {
-        href = web.home_page + href;
+      if (!href) {
+        return ;
+      }
+      if (-1 == href.indexOf(web.domain_url)) {
+        if ('/' == href[0]) {
+          href = web.home_page + href;
+        } else {
+          new_url = url;
+          ipos = new_url.lastIndexOf('/');
+          if (-1 != ipos) {
+            ext_url = new_url.substr(ipos + 1);
+            if (-1 != ext_url.indexOf('.')) {
+              new_url = new_url.substr(0, ipos);
+            }
+          }
+          if ('/' == new_url[new_url.length-1]) {
+            href = new_url + href;
+          } else {
+            href = new_url + '/' + href;
+          }
+        }
       }
 
       var item = new Object;
@@ -137,4 +175,6 @@ function parseChapterTitles(url, html, web) {
   return true;
 }
 
-//parseChapterUrl();
+String.prototype.trim=function(){
+   return this.replace(/(^\s*)|(\s*$)/g, "");
+}

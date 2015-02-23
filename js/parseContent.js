@@ -1,32 +1,46 @@
 function parseBody(chapter, target_id) {
-  url = chapter.url;
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", url, false);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      var html = xhr.response;
-      var website_file = chrome.extension.getURL('websiteList.json');
-      $.get(website_file, function(data) {
-        var file_json = JSON.parse(data);
-        for (i = 0; i < file_json.websiteList.length; ++i) {
-          var web = file_json.websiteList[i];
-          ipos = url.indexOf(web.domain_url);
-          if (-1 != ipos) {
-            if (web.content_selector.length > 0) {
-              parseChapterContent(chapter, html, web);
-            } else {
-              parseChapterContent_spec(chapter, html, web);
+  try {
+    url = chapter.url;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, false);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var html = xhr.response;
+        var website_file = chrome.extension.getURL('websiteList.json');
+        $.get(website_file, function(data) {
+          var file_json = JSON.parse(data);
+          for (i = 0; i < file_json.websiteList.length; ++i) {
+            var web = file_json.websiteList[i];
+            if (!web.enabled) {
+              continue;
             }
-            if (target_id) {
-              $(target_id.toString()).html(chapter.body);
+            ipos = url.indexOf(web.domain_url);
+            if (-1 != ipos) {
+              if (web.content_selector.length > 0) {
+                parseChapterContent(chapter, html, web);
+              } else {
+                parseChapterContent_spec(chapter, html, web);
+              }
+              if (target_id) {
+                $(target_id.toString()).html(chapter.body);
+              }
+              break;
             }
-            break;
           }
-        }
-      })
+        })
+      }
     }
+    xhr.send();
   }
-  xhr.send();
+  catch(e) {
+    if (target_id) {
+      $(target_id.toString()).html('Could not parse content');
+    }
+    console.log('try..catch: ' + e);
+  }
+  finally {
+    console.log('failed to execute Ajax');
+  }
 }
 
 function parseChapterContent(chapter, html, web) {
@@ -45,6 +59,13 @@ function parseChapterContent(chapter, html, web) {
 }
 
 function parseChapterContent_spec(chapter, html, web) {
+  if (-1 != web.domain_url.indexOf('qidian.com')) {
+    parseChapterContent_qidian(chapter, html, web);
+  }
+
+}
+
+function parseChapterContent_qidian(chapter, html, web) {
   ipos = html.indexOf('<script');
   while (ipos > 0) {
     html = html.substr(ipos+1);

@@ -1,10 +1,17 @@
 body.opt_body {
+  font:12px "microsoft YaHei","宋体";
   padding-top: 10px;
   padding-left: 50px;
   width: 650px;
 }
 
 div.opt_content {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 5px;
+}
+
+div.opt_sec_weblist {
   margin-top: 30px;
   margin-bottom: 30px;
   padding: 5px;
@@ -50,20 +57,31 @@ footer {
   font-size: 1.3em;
 }
 
-#allowed_website_list {
+.supported_website_list {
   font-size: 1.5em;
-  font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+  font:12px "microsoft YaHei","宋体";
   border-collapse:collapse;
   margin-bottom: 10px;
 }
 
-#allowed_website_list tr td {
-  width: 200px;
+.supported_website_list tr td {
+  width: 400px;
   border:1px solid #98bf21;
+  padding:3px 7px 2px 7px;
 }
 
-#allowed_website_list tr:hover {
+.supported_website_list tr:hover {
   background-color:#EAF2D3;
+}
+
+.supported_website_list th
+{
+  font-size:1.1em;
+  text-align:center;
+  padding-top:5px;
+  padding-bottom:4px;
+  background-color:#A7C942;
+  color:#ffffff;
 }
 
 span.remove_item {
@@ -74,4 +92,50 @@ span.remove_item {
 
 span.remove_item:hover {
   cursor: pointer;
+}
+
+.clear_all_history {
+  font:12px "microsoft YaHei","宋体";
+  font-size:1.1em;
+  margin-left: 2em;
+  margin-top: 10px;
+  text-decoration:underline;
+  color: #0000FF;
+  cursor:pointer;
+}
+
+.table_history {
+  font-size: 1.5em;
+  font:12px "microsoft YaHei","宋体";
+  border-collapse:collapse;
+  margin-bottom: 10px;
+}
+
+.table_history tr td {
+  width: 600px;
+  border:1px solid #98bf21;
+  padding:3px 7px 2px 7px;
+}
+
+.table_history tr:hover {
+  background-color:#EAF2D3;
+}
+
+.table_history th
+{
+  font-size:1.1em;
+  text-align:center;
+  padding-top:5px;
+  padding-bottom:4px;
+  background-color:#A7C942;
+  color:#ffffff;
+}
+
+.delete_history {
+  font-size:1.1em;
+  margin-left: 2em;
+  margin-top: 10px;
+  text-decoration:underline;
+  color: #0000FF;
+  cursor:pointer;
 }

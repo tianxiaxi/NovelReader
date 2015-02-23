@@ -2,15 +2,20 @@ var storage = chrome.storage.sync;
 var local = chrome.storage.local;
 
 var oldKeyDown = document.onkeydown;
+var content_url = localStorage.getItem("current_ContentPage");
 
 function LoadContent() {
-  content_url = localStorage.getItem("current_ContentPage");
   url = localStorage.getItem("current_chapter");
   chapterlist = JSON.parse(localStorage.getItem(content_url));
   if (!chapterlist.length) {
     parseChapterTitles(url);
     chapterlist = JSON.parse(localStorage.getItem(content_url));
   }
+
+  // update foot page
+  var foot_page = '<b>' + chrome.i18n.getMessage("extension_viewSource") + '</b>';
+  foot_page += '<a href="' + url + '">' + url + '</a>';
+  $('#current_url').html(foot_page);
 
   // update header
   if (!chapterlist.length) {
@@ -36,7 +41,7 @@ function LoadContent() {
       if (chapter.body || chapter.body.length <= 0) {
         parseBody(chapter, '#novel_text')
       }
-      $('#novel_text').html(chapter.body);
+      //$('#novel_text').html(chapter.body);
       break;
     }
   }
@@ -69,20 +74,18 @@ function LoadContent() {
   }
   $('.prev_chapter').click(function() {
     localStorage.setItem("current_chapter", prev_chater_url);
+    localStorage.setItem("current_ContentPage", content_url);
     location.reload();
   });
   $('.next_chapter').click(function() {
     localStorage.setItem("current_chapter", next_chater_url);
+    localStorage.setItem("current_ContentPage", content_url);
     location.reload();
   });
   $('.back_content').click(function() {
+    localStorage.setItem("current_ContentPage", content_url);
     window.location.href = '../views/chapters.html';
   });
-
-  // update foot page
-  var foot_page = '<b>' + chrome.i18n.getMessage("extension_viewSource") + '</b>';
-  foot_page += '<a href="' + url + '">' + url + '</a>';
-  $('#current_url').html(foot_page);
 }
 
 $(document).ready(function() {
@@ -102,15 +105,18 @@ function onkeydown() {
     // prev
     if (!$('.prev_chapter').is(':hidden')) {
       localStorage.setItem("current_chapter", prev_chater_url);
+    localStorage.setItem("current_ContentPage", content_url);
       location.reload();
     }
   } else if (39 == keyCode || 40 == keyCode){
     // next
     if (!$('.next_chapter').is(':hidden')) {
       localStorage.setItem("current_chapter", next_chater_url);
+    localStorage.setItem("current_ContentPage", content_url);
       location.reload();
     }
   } else if (13 == keyCode) {
+    localStorage.setItem("current_ContentPage", content_url);
     window.location.href = '../views/chapters.html';
   }
 }

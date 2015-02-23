@@ -15,7 +15,7 @@ body.popup {
     background-color: white;
 }
 
-#clean_all_histories {
+#view_histories {
   text-decoration:underline;
   color: #0000FF;
   margin-left:50px;
@@ -24,9 +24,20 @@ body.popup {
 
 div#view_supported_website {
   margin-top:20px;
+  margin-right: 50px;
+  float: left;
 }
 
 div#view_supported_website.view {
+  text-decoration:underline;
+  color: #0000FF;
+  margin-top:20px;
+  cursor:pointer;
+  float: left;
+  margin-right: 50px;
+}
+
+#ext_setting {
   text-decoration:underline;
   color: #0000FF;
   margin-top:20px;
@@ -89,22 +100,19 @@ div#err_message {
 
 .table_history {
   margin-left:10px;
+  line-height: 1.5em;
+  font:12px "microsoft YaHei","宋体";
 }
 
 .table_history tr:hover {
-  background-color: rgb(230,230,230);
-}
-
-.table_history td {
-  margin-left:0px;
-}
-
-
-span.td_remove {
   text-decoration:underline;
+  background-color: rgb(230,230,230);
   color: #0000FF;
-  margin-left:50px;
   cursor:pointer;
+}
+
+span.book_item {
+  margin: 10px;
 }
 
 ul.chapter_list {
@@ -141,7 +149,7 @@ a.chapter_item.chapter_item_read {
 
 div#novel_title {
   text-align:center;
-  font-size: 200%;
+  font-size: 1.5em;
 }
 
 div#novel_nav {

@@ -24,10 +24,6 @@ function getHistoryList() {
         label = '<span id="' + historylist[i].id + '" ';
         label += 'class="book_item">' + article + '</span>';
         innerHtml += '<td>' + label + '</td>';
-        //innerHtml += '<td>' + historylist[i].url + '</td>';
-        innerHtml += '<td>&nbsp;<span class="td_remove" hidden '
-          + 'id="' + historylist[i].id + '" '
-          + '>' + 'Remove' + '</span></td>';
         innerHtml += '</tr>';
       }
       innerHtml += '</table>';
@@ -39,45 +35,11 @@ function getHistoryList() {
       $('.table_history tr.tr_history').mouseleave(function() {
         $(this).find('.td_remove').attr('hidden', true);
       });
-      $('span.td_remove').click(function() {
-        delHistory($(this).attr('id'));
-        $(this).parent().parent().remove();
-      });
       $('span.book_item').click(function() {
         readNovel($(this).attr('id'));
       });
     }
   });
-}
-
-function delHistory(id) {
-  storage.get('history', function(items) {
-    if (items.history) {
-      historylist = JSON.parse(items.history);
-      for (i=0; i < historylist.length; ++i) {
-        if (historylist[i].id == id) {
-          historylist.splice(i,1);
-          break;
-        }
-      }
-      storage.set({'history': JSON.stringify(historylist)});
-    }
-  });
-}
-
-function cleanAllHistory() {
-/*  alert(chrome.i18n.getMessage("extension_ConfirmcleanAllHistory"));
-  var ret = confirm(chrome.i18n.getMessage("extension_ConfirmcleanAllHistory"));
-  if (true == ret) {
-    storage.remove('history');
-    $('#hostory_list').html('');
-  }
-  */
-  storage.remove('history');
-  $('#hostory_list').html('');
-
-  historylist = JSON.parse("[]");
-  storage.set({'history': JSON.stringify(historylist)});
 }
 
 $(document).ready(function() {
@@ -139,6 +101,9 @@ function viewSupportWebsite() {
     weblist_html += '<ul>';
     for (i = 0; i < weblist.length; ++i) {
       var web = weblist[i];
+      if (!web.enabled) {
+        continue;
+      }
       home_page = '<a href="' + web.home_page + '">' + web.name_chn + '</a>';
       weblist_html += '<li>' + home_page + '</li>';
     }
@@ -155,6 +120,9 @@ function init() {
     var file_json = JSON.parse(data);
     var weblist = file_json.websiteList;
     for (i = 0; i < weblist.length; ++i) {
+      if (!weblist[i].enabled) {
+        continue;
+      }
       weblist_html += weblist[i].domain_url;
       weblist_html += ',';
     }
@@ -174,8 +142,13 @@ function init() {
     $(this).attr('class', '');
   });
 
-  $('#clean_all_histories').click(function() {
-    cleanAllHistory();
+  $('#view_histories, #ext_setting').click(function() {
+    tab_url = chrome.extension.getURL('views/options.html');
+    chrome.tabs.create({
+      'url': tab_url,
+      'selected': true
+    });
+    window.close();
   });
 
   // reset label

@@ -1,5 +1,5 @@
 body {
-  font:14px "microsoft YaHei","宋体";
+  font:12px "microsoft YaHei","宋体";
   background-color: #E7F4FE;
   margin-left: 100px;
   margin-right: 100px;
@@ -7,15 +7,14 @@ body {
 
 div#novel_title {
   text-align:center;
-  font-size: 150%;
+  font-size: 1.3em;
 }
 
 div#novel_text {
   margin-top: 30px;
-  font-size: 10.5pt;
+  font-size: 12pt;
   line-height: 1.8;
   word-wrap: break-word;
-  //margin-left: 50px;
 }
 
 div#novel_nav {
@@ -41,4 +40,8 @@ div#current_url {
   margin-top: 50px;
   font-size:1.1em;
   margin-right: 50px;
+}
+
+div#current_url {
+  margin-bottom: 50px;
 }
