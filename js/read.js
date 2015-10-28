@@ -101,14 +101,14 @@ function onkeydown() {
     return ;
   }
   var keyCode = event.keyCode;
-  if (37 == keyCode || 38 == keyCode) {
+  if (37 == keyCode) {
     // prev
     if (!$('.prev_chapter').is(':hidden')) {
       localStorage.setItem("current_chapter", prev_chater_url);
     localStorage.setItem("current_ContentPage", content_url);
       location.reload();
     }
-  } else if (39 == keyCode || 40 == keyCode){
+  } else if (39 == keyCode){
     // next
     if (!$('.next_chapter').is(':hidden')) {
       localStorage.setItem("current_chapter", next_chater_url);
